@@ -446,11 +446,21 @@ void editorProcessKeyPress()
             break;
 
         case END_KEY:
-            E.cx = E.screenCols - 1;
+            if (E.cy < E.numrows) {
+                E.cx = E.row[E.cy].size;
+            }
             break;
 
         case PAGE_DOWN:
         case PAGE_UP: {
+            if (c == PAGE_UP) {
+                E.cy = E.rowoff;
+            } else if (c == PAGE_DOWN) {
+                E.cy = E.rowoff + E.screenRows - 1;
+                if (E.cy > E.numrows)
+                    E.cy = E.numrows;
+            }
+
             unsigned int times = E.screenRows;
             while (times--) {
                 editorMoveCursor(c == PAGE_UP ? ARROW_UP : ARROW_DOWN);
